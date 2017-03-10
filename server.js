@@ -2,7 +2,7 @@
 
 const Parity = require('@parity/parity.js');
 const oo7_parity = require('oo7-parity');
-const config = require('./config.js');
+var config = new(require('./config.js'))();
 
 function setupAbi(url) {
     const transport = new Parity.Api.Transport.Http(url);
@@ -56,7 +56,7 @@ function rain(who, to) {
         }
 
         if (past[who] && Date.now() - past[who] < REFILL_PERIOD) {
-            return reject('Faucet draw rate limited. Call back in ' + parseInt(config.refillHours) / 3600000 + ' hours.');
+            return reject('Faucet draw rate limited. Call back in ' + parseInt(config.refillPeriod) / 3600000 + ' hours.');
         }
 
         bondsF.Transform
