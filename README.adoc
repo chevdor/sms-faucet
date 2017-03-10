@@ -1,0 +1,39 @@
+= Verified faucet
+
+== Intro
+
+A faucet to issue tokens to SMS or email verified accounts.
+
+
+== Requirements
+
+It requires running a Parity node on a chain with registrar and verification contracts.
+
+== Config
+
+Yep, you must do a bit of config! But that´s easy, hang on tight.
+
+Config is done in `config.js` :
+
+- RPC endpoint 
+- the faucet address
+- number of tokens to send to SMS/email verified address
+- minimum time between claims
+
+== Run
+
+First make sure your nodes are running. You´ll need to run both kovan and mainnet with something like:
+
+	parity --unlock "<YourFaucet>" --password faucet.txt --jsonrpc-port 8546 --chain kovan.json
+	parity --json-rpc 8545
+
+Then start the faucet
+
+	pm2 start sms-faucet.json
+
+== License
+
+[source,reallyreallyboringtextnoonereads]
+----
+include::LICENSE[]
+----

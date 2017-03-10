@@ -14,5 +14,8 @@
     "js-sha3": "^0.5.7",
     "oo7-parity": "^0.1.5",
     "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "pm2": "^2.4.2"
   }
 }
