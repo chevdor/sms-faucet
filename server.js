@@ -18,6 +18,7 @@ let [apiK, bondsK] = setupAbi(config.kovan);
 bondsF.netChain.then(c => console.log(`On network chain ${c}`));
 
 var express = require('express');
+// var cors = require('cors');
 var bodyParser = require('body-parser');
 var keccak_256 = require('js-sha3').keccak_256;
 
@@ -27,7 +28,12 @@ var keccak_256 = require('js-sha3').keccak_256;
 // }
 
 var app = express();
+var morgan = require('morgan')
+app.set('view engine', 'ejs');
+// app.use(cors);
 app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(morgan('combined'))
+
 
 // TODO!!! UPDATE registry ABI in oo7-parity.js
 
@@ -44,7 +50,6 @@ const ETH_EMAIL = config.emailAmount;
 const REFILL_PERIOD = config.refillPeriod;
 
 function rain(who, to) {
-    console.log('rain');
     return new Promise(function(resolve, reject) {
 
         if (!who.match(/^0x[a-f0-9]{40}$/) || !to.match(/^0x[a-f0-9]{40}$/)) {
@@ -75,13 +80,16 @@ function rain(who, to) {
     });
 }
 
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
+
+app.get('/', function(req, res) {
+    res.render('pages/index');
 });
 
-app.get('/api/:address', function(req, res) {
+app.get('/about', function(req, res) {
+    res.render('pages/about');
+});
+
+app.get('/api/addr/:address', function(req, res) {
     let who = req.params.address.toLowerCase();
     rain(who, who)
         .then(function(response) {
@@ -92,7 +100,7 @@ app.get('/api/:address', function(req, res) {
         });
 });
 
-app.get('/:address', function(req, res) {
+app.get('/addr/:address', function(req, res) {
     let who = req.params.address.toLowerCase();
     rain(who, who)
         .then(function(response) {
@@ -109,7 +117,6 @@ app.get('/:address/:to', function (req, res) {
     rain(who, to, res);
 });
 */
-
 
 console.log("Start server...");
 var server = app.listen(process.env.PORT || config.port, function() {
