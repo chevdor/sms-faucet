@@ -18,7 +18,7 @@ let [apiK, bondsK] = setupAbi(config.kovan);
 bondsF.netChain.then(c => console.log(`On network chain ${c}`));
 
 var express = require('express');
-// var cors = require('cors');
+var cors = require('cors');
 var bodyParser = require('body-parser');
 var keccak_256 = require('js-sha3').keccak_256;
 
@@ -30,7 +30,8 @@ var keccak_256 = require('js-sha3').keccak_256;
 var app = express();
 var morgan = require('morgan')
 app.set('view engine', 'ejs');
-// app.use(cors);
+app.use(cors());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(morgan('combined'))
 
@@ -89,7 +90,8 @@ app.get('/about', function(req, res) {
     res.render('pages/about');
 });
 
-app.get('/api/addr/:address', function(req, res) {
+app.post('/api/addr', function(req, res) {
+    console.log(req);
     let who = req.params.address.toLowerCase();
     rain(who, who)
         .then(function(response) {
